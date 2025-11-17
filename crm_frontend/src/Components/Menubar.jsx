@@ -11,6 +11,22 @@ const Menubar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
+   const sendvertifcationOTp = async()=>{
+      try{
+        axios.defaults.withCredentials =true;
+        const response =await  axios.post(`${backendUrl}/send-otp`);
+        if(response.status==200){
+          navigate("/email-verify");
+          toast.success("OTP has been send successfully!");
+        }
+        else{
+          toast.error("Unable to send OTP");
+        }
+      }
+      catch(error){
+        toast.error(error.response.data.message);
+      }
+    }
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -71,11 +87,11 @@ const Menubar = () => {
                 minWidth:"150px"
               }}
             >
-              {!userData.isAccountVerified && (
+              {!userData. accountVerified && (
                 <div 
                   className="dropdown-item py-1 px-2"
                   style={{cursor:"pointer"}}
-                >
+                onClick={sendvertifcationOTp} >
                   Verify Email
                 </div>
               )}
@@ -87,6 +103,14 @@ const Menubar = () => {
               >
                 Logout
               </div>
+               <div 
+                className="dropdown-item py-1 px-2 text" 
+                style={{cursor:"pointer"}}
+                onClick={()=> navigate("/reset-password")}
+              >
+                Reset Password
+              </div>
+
             </div>
           )}
         </div>
